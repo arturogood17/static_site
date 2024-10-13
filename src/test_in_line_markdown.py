@@ -1,6 +1,6 @@
 import unittest
 
-from in_line_markdown import split_nodes_delimiter
+from in_line_markdown import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 
 from textnode import TextNode, text_type_text, text_type_bold, text_type_italic, text_type_code
 
@@ -52,6 +52,16 @@ class TestInLineMarkdown(unittest.TestCase):
             TextNode(" inside a ", text_type_text),
             TextNode("paragraph", text_type_bold),
         ], new_nodes)
+
+    def test_regex_image(self):
+        text= "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        images = extract_markdown_images(text)
+        self.assertListEqual([("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")], images)
+
+    def test_regex_links(self):
+        text= "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        links = extract_markdown_links(text)
+        self.assertListEqual([("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")], links)
 
 if __name__=="__main__":
     unittest.main()
