@@ -17,8 +17,11 @@ class TextNode:
             return True
     
     def __repr__(self) -> str:
-        return f"TextNode({self.text}, {self.text_type}, {self.url})"
-    
+        if self.url:
+            return f"TextNode({self.text}, {self.text_type}, {self.url})"
+        else:
+            return f"TextNode({self.text}, {self.text_type})"
+        
 def text_node_to_html_node(text_node):
     match text_node.text_type:
         case "text":
