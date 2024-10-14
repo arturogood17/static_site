@@ -35,22 +35,38 @@ def extract_markdown_links(text):
 def split_nodes_image(old_nodes):
     new_nodes= []
     for node in old_nodes:
-        images = extract_markdown_images(node.text)
-        if images != []:
-            for image in images:
-                alt_image, link = image
-                split_node = node.text.split(f"![{alt_image}]({link})")
-    return(split_node)
+        while node.text:
+            images = extract_markdown_images(node.text)
+            if images:
+                alt_image, link = images[0]
+                split_node = node.text.split(f"![{alt_image}]({link})", 1)
+                if len(split_node) != 2:
+                    raise Exception("Invalid markdown, image section not closed.")
+                if split_node[0]:
+                    new_nodes.append(TextNode(split_node[0], text_type_text))
+                new_nodes.append(TextNode(alt_image, text_type_image, link))
+                node.text= split_node[1]
+            else:
+                new_nodes.append(node)
+                break
+    return new_nodes
 
 
 def split_nodes_link(old_nodes):
-    pass
-
-node= [TextNode(
-    "This is text with a link ![to boot dev](https://www.boot.dev) and ![to youtube](https://www.youtube.com/@bootdotdev)",
-    text_type_text,
-), TextNode(
-    "This is text with a link  and it isn't",
-    text_type_text,
-)]
-print(split_nodes_image(node))
+    new_nodes= []
+    for node in old_nodes:
+        while node.text:
+            links = extract_markdown_links(node.text)
+            if links:
+                alt_link, url = links[0]
+                split_node = node.text.split(f"[{alt_link}]({url})", 1)
+                if len(split_node) != 2:
+                    raise Exception("Invalid markdown, link section not closed.")
+                if split_node[0]:
+                    new_nodes.append(TextNode(split_node[0], text_type_text))
+                new_nodes.append(TextNode(alt_link, text_type_link, url))
+                node.text= split_node[1]
+            else:
+                new_nodes.append(node)
+                break
+    return new_nodes
