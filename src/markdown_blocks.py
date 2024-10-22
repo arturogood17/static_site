@@ -23,34 +23,32 @@ def markdown_to_blocks(markdown):
 def block_to_block_type(block):
     patron_heading = r"^#{1,6} "
     lines = block.split("\n")
+    lines = [line.strip() for line in lines if line.strip()]
     if re.match(patron_heading, block):
         return block_type_heading
-    
     if len(lines) > 1 and lines[0].startswith("```") and lines[-1].startswith("```"): #Tiene que ser len() > 1 porque son cierre y final
         return block_type_code
-    
     if block.startswith("> "):
         for i in lines:
             if not i.startswith("> "):
                 return block_type_paragraph
         return block_type_quote
-    
     if block.startswith("* "):
         for i in lines:
             if not i.startswith("* ") :
                 return block_type_paragraph
         return block_type_ulist
-    
     if block.startswith("- "):
         for i in lines:
             if not i.startswith("- "):
                 return block_type_paragraph
         return block_type_ulist
-    
-    if block.startswith("1. "):
-        for index, value in enumerate(lines[1:]):
-            if not value.startswith(f"{index + 2}. "):
+    if lines[0].startswith("1. "):
+        i= 1
+        for line in lines:
+            if not line.startswith(f"{i}. "):
                 return block_type_paragraph
+            i += 1
         return block_type_olist
     return block_type_paragraph
 
@@ -75,7 +73,8 @@ def block_to_html_node(block):
     if type == block_type_ulist:
         return ulist_to_html_node(block)
     if type == block_type_olist:
-        return ulist_to_html_node(block)
+        return olist_to_html_node(block)
+    raise ValueError("Invalid block type")
 
 def text_to_children(text):
     children= []
@@ -98,7 +97,7 @@ def heading_to_html_node(block):
             level +=1
         else:
             break
-    if level + 1 >= level(block):
+    if level + 1 >= len(block):
         raise ValueError(f"Invalid heading level= {level}")
     text= block[level+1:]
     children = text_to_children(text)
@@ -113,30 +112,31 @@ def quote_to_html_node(block):
         new_lines.append(line.lstrip(">").strip())
     content= " ".join(new_lines)
     children = text_to_children(content)
-    return ParentNode("quoteblock", children)
+    return ParentNode("blockquote", children)
 
 def code_to_html_node(block):
     if not block.startswith("```") or not block.endswith("```"):
         raise ValueError("Invalid code block")
     text= block[4:-3]
-    children= text_to_children(text)
+    children= text_to_children(text.strip())
     code= ParentNode("code", children)
     return ParentNode("pre", [code])
 
 def ulist_to_html_node(block):
-    list= block.split("\n")
-    html_items= []
-    for i in list:
+    html_list=[]
+    split = block.split("\n")
+    for i in split:
         text= i[2:]
-        children= text_to_children(text)
-        html_items.append(ParentNode("li", children))
-    return ParentNode("ul", html_items)
+        children = text_to_children(text)
+        html_list.append(ParentNode("li", children))
+    return ParentNode("ul", html_list)
+
 
 def olist_to_html_node(block):
-    list= block.split("\n")
-    html_items= []
-    for i in list:
+    html_list=[]
+    split = block.split("\n")
+    for i in split:
         text= i[3:]
-        children= text_to_children(text)
-        html_items.append(ParentNode("li", children))
-    return ParentNode("ol", html_items)
+        children = text_to_children(text)
+        html_list.append(ParentNode("li", children))
+    return ParentNode("ol", html_list)
