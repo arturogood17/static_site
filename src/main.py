@@ -18,9 +18,9 @@ def main():
     copypath(dir_path_static, dir_path_public)
 
     print("Generating page...")
-    generate_pages_recursive(os.path.join(dir_path_content, "index.md"),
+    generate_pages_recursive(dir_path_content,
                              template_path,
-                             os.path.join(dir_path_public, "index.html"))
+                             dir_path_public)
 
 
 
