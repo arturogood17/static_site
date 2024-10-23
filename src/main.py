@@ -1,9 +1,13 @@
-from textnode import TextNode
 from copystatic import copypath
 import shutil, os
+from gencontent import generate_page
 
-dir_path_static= "./static"
-dir_path_public= "./public"
+
+
+dir_path_static= "/home/nestapon9/workspace/github.com/arturogood17/static_site/static"
+dir_path_public= "/home/nestapon9/workspace/github.com/arturogood17/static_site/public"
+dir_path_content = "/home/nestapon9/workspace/github.com/arturogood17/static_site/content"
+template_path = "/home/nestapon9/workspace/github.com/arturogood17/static_site/template.html"
 
 def main():
     print("Deleting directory...")
@@ -12,6 +16,11 @@ def main():
 
     print("Copying static files to public directory...")
     copypath(dir_path_static, dir_path_public)
+
+    print("Generating page...")
+    generate_page(os.path.join(dir_path_content, "index.md"),
+                  template_path,
+                  os.path.join(dir_path_public, "index.html"))
 
 
 
