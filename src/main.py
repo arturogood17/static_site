@@ -4,9 +4,9 @@ from gencontent import generate_pages_recursive
 
 
 
-dir_path_static= "/home/nestapon9/workspace/github.com/arturogood17/static_site/static"
-dir_path_public= "/home/nestapon9/workspace/github.com/arturogood17/static_site/public"
-dir_path_content = "/home/nestapon9/workspace/github.com/arturogood17/static_site/content"
+dir_path_static= "/home/nestapon9/workspace/github.com/arturogood17/static_site/static/"
+dir_path_public= "/home/nestapon9/workspace/github.com/arturogood17/static_site/public/"
+dir_path_content = "/home/nestapon9/workspace/github.com/arturogood17/static_site/content/"
 template_path = "/home/nestapon9/workspace/github.com/arturogood17/static_site/template.html"
 
 def main():
