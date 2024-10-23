@@ -1,6 +1,6 @@
 from copystatic import copypath
 import shutil, os
-from gencontent import generate_page
+from gencontent import generate_pages_recursive
 
 
 
@@ -18,9 +18,9 @@ def main():
     copypath(dir_path_static, dir_path_public)
 
     print("Generating page...")
-    generate_page(os.path.join(dir_path_content, "index.md"),
-                  template_path,
-                  os.path.join(dir_path_public, "index.html"))
+    generate_pages_recursive(os.path.join(dir_path_content, "index.md"),
+                             template_path,
+                             os.path.join(dir_path_public, "index.html"))
 
 
 
