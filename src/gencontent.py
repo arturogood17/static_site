@@ -27,8 +27,8 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
     for item in os.listdir(dir_path_content):
         from_path= os.path.join(dir_path_content, item)
         dest_path= os.path.join(dest_dir_path, item)
-        if os.path.isfile(from_path):
-            dest_path= Path(dest_path).with_suffix(".html")
+        if os.path.isfile(from_path): #revisas si es un file
+            dest_path= Path(dest_path).with_suffix(".html") #creas el Path de destino con el path normal, el file y un sufijo ".html"
             generate_page(from_path, template_path, dest_path)
         else:
             generate_pages_recursive(from_path, template_path, dest_path)
