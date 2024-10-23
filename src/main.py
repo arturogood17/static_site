@@ -1,7 +1,6 @@
 from copystatic import copypath
 import shutil, os
-from gencontent import generate_pages_recursive
-
+from gencontent import *
 
 
 dir_path_static= "/home/nestapon9/workspace/github.com/arturogood17/static_site/static/"
@@ -18,9 +17,7 @@ def main():
     copypath(dir_path_static, dir_path_public)
 
     print("Generating page...")
-    generate_pages_recursive(dir_path_content,
-                             template_path,
-                             dir_path_public)
+    generate_pages_recursive(dir_path_content, template_path, dir_path_public)
 
 
 
