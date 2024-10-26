@@ -17,11 +17,11 @@ class HTMLNode:
         return props_to_html.rstrip()
     
     def __repr__(self) -> str:
-        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
+        return f"HTMLNode({self.tag}, {self.value}, children: {self.children}, {self.props})"
     
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
-        super().__init__(tag, None, children, props)
+        super().__init__(tag, None, children, props) #Value is None en este
 
     def to_html(self):
         if self.tag is None:
