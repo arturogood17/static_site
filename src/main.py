@@ -3,10 +3,10 @@ import shutil, os
 from gencontent import generate_pages_recursive
 
 
-dir_path_static= "/home/nestapon9/workspace/github.com/arturogood17/static_site/static/" #actualizar esto al subirlo
-dir_path_public= "/home/nestapon9/workspace/github.com/arturogood17/static_site/public/"
-dir_path_content = "/home/nestapon9/workspace/github.com/arturogood17/static_site/content/"
-template_path = "/home/nestapon9/workspace/github.com/arturogood17/static_site/template.html"
+dir_path_static= "./static_site/static/" #actualizar esto al subirlo
+dir_path_public= "./static_site/public/"
+dir_path_content = "./static_site/content/"
+template_path = "./static_site/template.html"
 
 def main():
     print("Deleting directory...")
