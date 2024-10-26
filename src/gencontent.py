@@ -38,7 +38,7 @@ def generate_page(from_path, template_path, dest_path):
 
 def extract_title(markdown):
     content= markdown.strip().split("\n")
-    first_heading = content[0]
-    if not first_heading.startswith("# "):
-        raise Exception("Title not found.")
-    return first_heading.strip("# ")
+    for line in content:
+        if line.startswith("# "):
+            return line[2:]
+    raise ValueError("No title found")
